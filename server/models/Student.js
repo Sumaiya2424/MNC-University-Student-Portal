@@ -18,10 +18,16 @@ const studentSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  dateOfEnrollment: {
-    type: Date,
-    default: Date.now,
+  phone: {
+    type: String,
+    required: true,
   },
+  address: {
+    type: String,
+    required: true,
+  },
+}, {
+  timestamps: true,
 });
 
 const Student = mongoose.model('Student', studentSchema);
