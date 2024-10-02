@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
-const StudentList = ({ fetchStudents, students }) => {
+const StudentList = () => {
+  const [students, setStudents] = useState([]);
+
+  // Fetch students from the server
+  const fetchStudents = async () => {
+    const response = await fetch('http://localhost:5000/api/students');
+    const data = await response.json();
+    setStudents(data);
+  };
+
+  // Use useEffect to fetch students when the component loads
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
   const [editingStudent, setEditingStudent] = useState(null);
   const [editFormData, setEditFormData] = useState({
     name: '',
@@ -17,7 +31,7 @@ const StudentList = ({ fetchStudents, students }) => {
       await fetch(`http://localhost:5000/api/students/${id}`, {
         method: 'DELETE',
       });
-      fetchStudents();
+      fetchStudents(); // Re-fetch students after deletion
     }
   };
 
@@ -44,7 +58,7 @@ const StudentList = ({ fetchStudents, students }) => {
       body: JSON.stringify(editFormData),
     });
     setEditingStudent(null);
-    fetchStudents();
+    fetchStudents(); // Re-fetch students after editing
   };
 
   return (
@@ -115,7 +129,7 @@ const StudentList = ({ fetchStudents, students }) => {
                 <td>
                   <input
                     type="tel"
-                    value={editFormData.phone}    
+                    value={editFormData.phone}
                     onChange={(e) =>
                       setEditFormData({
                         ...editFormData,
@@ -128,7 +142,7 @@ const StudentList = ({ fetchStudents, students }) => {
                 <td>
                   <input
                     type="text"
-                    value={editFormData.address}  
+                    value={editFormData.address}
                     onChange={(e) =>
                       setEditFormData({
                         ...editFormData,
@@ -159,8 +173,8 @@ const StudentList = ({ fetchStudents, students }) => {
                 <td>{student.email}</td>
                 <td>{student.age}</td>
                 <td>{student.course}</td>
-                <td>{student.phone}</td>    
-                <td>{student.address}</td>  
+                <td>{student.phone}</td>
+                <td>{student.address}</td>
                 <td>
                   <button
                     className="btn btn-primary btn-sm me-2"
