@@ -1,41 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react'; 
+import { StudentContext } from './StudentContext';
+import ToastNotification from './ToastNotification';
 
 const StudentList = () => {
-  const [students, setStudents] = useState([]);
-
-  // Fetch students from the server
-  const fetchStudents = async () => {
-    const response = await fetch('http://localhost:5000/api/students');
-    const data = await response.json();
-    setStudents(data);
-  };
-
-  // Use useEffect to fetch students when the component loads
-  useEffect(() => {
-    fetchStudents();
-  }, []);
-
+  const { students, fetchStudents } = useContext(StudentContext);
   const [editingStudent, setEditingStudent] = useState(null);
   const [editFormData, setEditFormData] = useState({
     name: '',
     email: '',
     age: '',
     course: '',
-    phone: '',    
-    address: '',  
+    phone: '',
+    address: '',
   });
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
-  // Handle Delete
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this student?')) {
-      await fetch(`http://localhost:5000/api/students/${id}`, {
-        method: 'DELETE',
-      });
-      fetchStudents(); // Re-fetch students after deletion
+      try {
+        const response = await fetch(`http://localhost:5000/api/students/${id}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to delete student');
+        }
+        fetchStudents(); // Re-fetch students after deletion
+        setToastMessage('Student deleted successfully!');
+        setShowToast(true);
+      } catch (error) {
+        console.error('Error deleting student:', error);
+        setToastMessage('Failed to delete student.');
+        setShowToast(true);
+      }
     }
   };
 
-  // Handle Edit
   const handleEdit = (student) => {
     setEditingStudent(student._id);
     setEditFormData({
@@ -43,158 +43,163 @@ const StudentList = () => {
       email: student.email,
       age: student.age,
       course: student.course,
-      phone: student.phone,    
-      address: student.address,  
+      phone: student.phone,
+      address: student.address,
     });
   };
 
-  // Handle Save Edit
   const handleSaveEdit = async (id) => {
-    await fetch(`http://localhost:5000/api/students/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(editFormData),
-    });
-    setEditingStudent(null);
-    fetchStudents(); // Re-fetch students after editing
+    try {
+      await fetch(`http://localhost:5000/api/students/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editFormData),
+      });
+      setEditingStudent(null);
+      fetchStudents(); // Re-fetch students after editing
+      setToastMessage('Student updated successfully!');
+      setShowToast(true);
+    } catch (error) {
+      console.error('Error updating student:', error);
+      setToastMessage('Failed to update student.');
+      setShowToast(true);
+    }
   };
+
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => {
+        setShowToast(false);
+      }, 4000); // 4000 milliseconds = 4 seconds
+
+      return () => clearTimeout(timer); // Clean up the timer on component unmount
+    }
+  }, [showToast]);
 
   return (
-    <div className="container">
-      <h2>Student List</h2>
-      <table className="table table-striped">
-        <thead>
-          <tr className="bg-primary text-white">
-            <th>Name</th>
-            <th>Email</th>
-            <th>Age</th>
-            <th>Course</th>
-            <th>Phone</th>
-            <th>Address</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {students.map((student) =>
-            editingStudent === student._id ? (
-              <tr key={student._id}>
-                <td>
-                  <input
-                    type="text"
-                    value={editFormData.name}
-                    onChange={(e) =>
-                      setEditFormData({ ...editFormData, name: e.target.value })
-                    }
-                    className="form-control"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="email"
-                    value={editFormData.email}
-                    onChange={(e) =>
-                      setEditFormData({ ...editFormData, email: e.target.value })
-                    }
-                    className="form-control"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    value={editFormData.age}
-                    onChange={(e) =>
-                      setEditFormData({ ...editFormData, age: e.target.value })
-                    }
-                    className="form-control"
-                  />
-                </td>
-                <td>
-                  <select
-                    value={editFormData.course}
-                    onChange={(e) =>
-                      setEditFormData({ ...editFormData, course: e.target.value })
-                    }
-                    className="form-select"
-                  >
-                    <option value="Computer Science">Computer Science</option>
-                    <option value="Information Technology">Information Technology</option>
-                    <option value="Software Engineering">Software Engineering</option>
-                    <option value="Business Administration">Business Administration</option>
-                    <option value="Graphic Design">Graphic Design</option>
-                    <option value="Data Science">Data Science</option>
-                  </select>
-                </td>
-                <td>
-                  <input
-                    type="tel"
-                    value={editFormData.phone}
-                    onChange={(e) =>
-                      setEditFormData({
-                        ...editFormData,
-                        phone: e.target.value,
-                      })
-                    }
-                    className="form-control"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    value={editFormData.address}
-                    onChange={(e) =>
-                      setEditFormData({
-                        ...editFormData,
-                        address: e.target.value,
-                      })
-                    }
-                    className="form-control"
-                  />
-                </td>
-                <td>
-                  <button
-                    className="btn btn-success btn-sm"
-                    onClick={() => handleSaveEdit(student._id)}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="btn btn-secondary btn-sm"
-                    onClick={() => setEditingStudent(null)}
-                  >
-                    Cancel
-                  </button>
-                </td>
-              </tr>
-            ) : (
-              <tr key={student._id}>
-                <td>{student.name}</td>
-                <td>{student.email}</td>
-                <td>{student.age}</td>
-                <td>{student.course}</td>
-                <td>{student.phone}</td>
-                <td>{student.address}</td>
-                <td>
-                  <button
-                    className="btn btn-primary btn-sm me-2"
-                    onClick={() => handleEdit(student)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => handleDelete(student._id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            )
-          )}
-        </tbody>
-      </table>
-    </div>
+    <>
+      <div className="container mt-4">
+        <h2 className="text-center mb-4">Student List</h2>
+        <div className="card">
+          <div className="card-body">
+            <table className="table table-hover table-bordered">
+              <thead className="table-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Age</th>
+                  <th>Course</th>
+                  <th>Phone</th>
+                  <th>Address</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {students.map((student) =>
+                  editingStudent === student._id ? (
+                    <tr key={student._id}>
+                      <td>
+                        <input
+                          type="text"
+                          value={editFormData.name}
+                          onChange={(e) =>
+                            setEditFormData({ ...editFormData, name: e.target.value })
+                          }
+                          className="form-control"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="email"
+                          value={editFormData.email}
+                          onChange={(e) =>
+                            setEditFormData({ ...editFormData, email: e.target.value })
+                          }
+                          className="form-control"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          value={editFormData.age}
+                          onChange={(e) =>
+                            setEditFormData({ ...editFormData, age: e.target.value })
+                          }
+                          className="form-control"
+                        />
+                      </td>
+                      <td>
+                        <select
+                          value={editFormData.course}
+                          onChange={(e) =>
+                            setEditFormData({ ...editFormData, course: e.target.value })
+                          }
+                          className="form-select"
+                        >
+                          <option value="Computer Science">Computer Science</option>
+                          <option value="Information Technology">Information Technology</option>
+                          <option value="Software Engineering">Software Engineering</option>
+                          <option value="Business Administration">Business Administration</option>
+                          <option value="Graphic Design">Graphic Design</option>
+                          <option value="Data Science">Data Science</option>
+                        </select>
+                      </td>
+                      <td>
+                        <input
+                          type="tel"
+                          value={editFormData.phone}
+                          onChange={(e) =>
+                            setEditFormData({ ...editFormData, phone: e.target.value })
+                          }
+                          className="form-control"
+                        />
+                      </td>
+                      <td>
+                        <textarea
+                          value={editFormData.address}
+                          onChange={(e) =>
+                            setEditFormData({ ...editFormData, address: e.target.value })
+                          }
+                          className="form-control"
+                        />
+                      </td>
+                      <td>
+                        <button onClick={() => handleSaveEdit(student._id)} className="btn btn-success">
+                          Save
+                        </button>
+                        <button onClick={() => setEditingStudent(null)} className="btn btn-danger ms-2">
+                          Cancel
+                        </button>
+                      </td>
+                    </tr>
+                  ) : (
+                    <tr key={student._id}>
+                      <td>{student.name}</td>
+                      <td>{student.email}</td>
+                      <td>{student.age}</td>
+                      <td>{student.course}</td>
+                      <td>{student.phone}</td>
+                      <td>{student.address}</td>
+                      <td>
+                        <button onClick={() => handleEdit(student)} className="btn btn-primary me-2">
+                          Edit
+                        </button>
+                        <button onClick={() => handleDelete(student._id)} className="btn btn-danger">
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <ToastNotification show={showToast} message={toastMessage} onClose={() => setShowToast(false)} />
+    </>
   );
 };
 

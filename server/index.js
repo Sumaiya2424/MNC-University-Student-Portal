@@ -8,8 +8,8 @@ dotenv.config();
 
 const app = express();
 
-app.use(express.json());  // For parsing JSON bodies
-app.use(cors());  // Enable Cross-Origin requests
+app.use(express.json());  
+app.use(cors());  
 
 connectDB();
 
