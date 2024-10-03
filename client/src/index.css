@@ -1,3 +1,17 @@
+/* For the buttons in StudentList */
+.button-group {
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .button-group .btn {
+    margin-right: 10px;
+    padding: 5px 10px;  
+    font-size: 12px;    
+  }
+  
+
+  /* FOr The Message to diaplay */
 .toast-container {
     position: fixed;
     top: 20px;
@@ -36,3 +50,17 @@
 .toast-close:hover {
     color: #f8d7da;
 }
+
+
+/* About Us page*/
+.card {
+    background-color: #f8f9fa;
+}
+  
+  .card-title {
+    font-weight: bold;
+  }
+  
+  .card-text {
+    line-height: 1.6; 
+  }

@@ -72,132 +72,139 @@ const StudentList = () => {
     if (showToast) {
       const timer = setTimeout(() => {
         setShowToast(false);
-      }, 4000); // 4000 milliseconds = 4 seconds
+      }, 3000); 
 
-      return () => clearTimeout(timer); // Clean up the timer on component unmount
+      return () => clearTimeout(timer); 
     }
   }, [showToast]);
 
   return (
     <>
-      <div className="container mt-4">
+      <div className="mt-4"> 
         <h2 className="text-center mb-4">Student List</h2>
         <div className="card">
           <div className="card-body">
-            <table className="table table-hover table-bordered">
-              <thead className="table-light">
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Age</th>
-                  <th>Course</th>
-                  <th>Phone</th>
-                  <th>Address</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {students.map((student) =>
-                  editingStudent === student._id ? (
-                    <tr key={student._id}>
-                      <td>
-                        <input
-                          type="text"
-                          value={editFormData.name}
-                          onChange={(e) =>
-                            setEditFormData({ ...editFormData, name: e.target.value })
-                          }
-                          className="form-control"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="email"
-                          value={editFormData.email}
-                          onChange={(e) =>
-                            setEditFormData({ ...editFormData, email: e.target.value })
-                          }
-                          className="form-control"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={editFormData.age}
-                          onChange={(e) =>
-                            setEditFormData({ ...editFormData, age: e.target.value })
-                          }
-                          className="form-control"
-                        />
-                      </td>
-                      <td>
-                        <select
-                          value={editFormData.course}
-                          onChange={(e) =>
-                            setEditFormData({ ...editFormData, course: e.target.value })
-                          }
-                          className="form-select"
-                        >
-                          <option value="Computer Science">Computer Science</option>
-                          <option value="Information Technology">Information Technology</option>
-                          <option value="Software Engineering">Software Engineering</option>
-                          <option value="Business Administration">Business Administration</option>
-                          <option value="Graphic Design">Graphic Design</option>
-                          <option value="Data Science">Data Science</option>
-                        </select>
-                      </td>
-                      <td>
-                        <input
-                          type="tel"
-                          value={editFormData.phone}
-                          onChange={(e) =>
-                            setEditFormData({ ...editFormData, phone: e.target.value })
-                          }
-                          className="form-control"
-                        />
-                      </td>
-                      <td>
-                        <textarea
-                          value={editFormData.address}
-                          onChange={(e) =>
-                            setEditFormData({ ...editFormData, address: e.target.value })
-                          }
-                          className="form-control"
-                        />
-                      </td>
-                      <td>
-                        <button onClick={() => handleSaveEdit(student._id)} className="btn btn-success">
-                          Save
-                        </button>
-                        <button onClick={() => setEditingStudent(null)} className="btn btn-danger ms-2">
-                          Cancel
-                        </button>
-                      </td>
-                    </tr>
-                  ) : (
-                    <tr key={student._id}>
-                      <td>{student.name}</td>
-                      <td>{student.email}</td>
-                      <td>{student.age}</td>
-                      <td>{student.course}</td>
-                      <td>{student.phone}</td>
-                      <td>{student.address}</td>
-                      <td>
-                        <button onClick={() => handleEdit(student)} className="btn btn-primary me-2">
-                          Edit
-                        </button>
-                        <button onClick={() => handleDelete(student._id)} className="btn btn-danger">
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  )
-                )}
-              </tbody>
-            </table>
+            <div className="table-responsive">
+              <table className="table table-hover table-bordered">
+                <thead className="table-light">
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                    <th>Course</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {students.map((student) =>
+                    editingStudent === student._id ? (
+                      <tr key={student._id}>
+                        <td>
+                          <input
+                            type="text"
+                            value={editFormData.name}
+                            onChange={(e) =>
+                              setEditFormData({ ...editFormData, name: e.target.value })
+                            }
+                            className="form-control"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="email"
+                            value={editFormData.email}
+                            onChange={(e) =>
+                              setEditFormData({ ...editFormData, email: e.target.value })
+                            }
+                            className="form-control"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={editFormData.age}
+                            onChange={(e) =>
+                              setEditFormData({ ...editFormData, age: e.target.value })
+                            }
+                            className="form-control"
+                          />
+                        </td>
+                        <td>
+                          <select
+                            value={editFormData.course}
+                            onChange={(e) =>
+                              setEditFormData({ ...editFormData, course: e.target.value })
+                            }
+                            className="form-select"
+                          >
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Software Engineering">Software Engineering</option>
+                            <option value="Business Administration">Business Administration</option>
+                            <option value="Graphic Design">Graphic Design</option>
+                            <option value="Data Science">Data Science</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type="tel"
+                            value={editFormData.phone}
+                            onChange={(e) =>
+                              setEditFormData({ ...editFormData, phone: e.target.value })
+                            }
+                            className="form-control"
+                          />
+                        </td>
+                        <td>
+                          <textarea
+                            value={editFormData.address}
+                            onChange={(e) =>
+                              setEditFormData({ ...editFormData, address: e.target.value })
+                            }
+                            className="form-control"
+                          />
+                        </td>
+                        <td>
+  <div className="button-group">
+    <button onClick={() => handleSaveEdit(student._id)} className="btn btn-success">
+      Save
+    </button>
+    <button onClick={() => setEditingStudent(null)} className="btn btn-danger">
+      Cancel
+    </button>
+  </div>
+</td>
+                      </tr>
+                    ) : (
+                      <tr key={student._id}>
+                        <td>{student.name}</td>
+                        <td>{student.email}</td>
+                        <td>{student.age}</td>
+                        <td>{student.course}</td>
+                        <td>{student.phone}</td>
+                        <td>{student.address}</td>
+                        <td>
+  <div className="button-group">
+    <button onClick={() => handleEdit(student)} className="btn btn-primary">
+      Edit
+    </button>
+    <button onClick={() => handleDelete(student._id)} className="btn btn-danger">
+      Delete
+    </button>
+  </div>
+</td>
+                      </tr>
+                    )
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+      <div style={{ marginBottom: '20px' }} /> 
       <ToastNotification show={showToast} message={toastMessage} onClose={() => setShowToast(false)} />
     </>
   );

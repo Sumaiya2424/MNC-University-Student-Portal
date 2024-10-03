@@ -5,7 +5,8 @@ import Navbar from './components/Navbar';
 import StudentForm from './components/StudentForm';
 import StudentList from './components/StudentList';
 import Footer from './components/Footer';
-import { StudentProvider } from './components/StudentContext'; // Import the StudentProvider
+import AboutUs from './components/AboutUs'; 
+import { StudentProvider } from './components/StudentContext';
 
 const App = () => {
   return (
@@ -25,7 +26,7 @@ const App = () => {
               }
             />
             <Route path="/students" element={<StudentList />} />
-            <Route path="/about" element={<div>About Us</div>} />
+            <Route path="/about" element={<AboutUs />} />
           </Routes>
         </div>
         <Footer />
