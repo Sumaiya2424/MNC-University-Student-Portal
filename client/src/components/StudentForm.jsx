@@ -35,7 +35,6 @@ const StudentForm = () => {
       setShowToast(true);
     }
 
-    // Clear input fields after submission
     setName('');
     setEmail('');
     setAge('');
