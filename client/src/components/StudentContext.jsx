@@ -7,7 +7,7 @@ export const StudentProvider = ({ children }) => {
   const [students, setStudents] = useState([]);
 
   const fetchStudents = async () => {
-    const response = await fetch('http://localhost:5000/api/students');
+    const response = await fetch(`http://localhost:5000/api/students`); 
     const data = await response.json();
     setStudents(data);
   };

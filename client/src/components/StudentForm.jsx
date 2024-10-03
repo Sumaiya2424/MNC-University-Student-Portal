@@ -18,7 +18,7 @@ const StudentForm = () => {
     const studentData = { name, email, age, course, phone, address };
 
     try {
-      await fetch('http://localhost:5000/api/students', {
+      await fetch(`http://localhost:5000/api/students`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,11 +49,11 @@ const StudentForm = () => {
     if (showToast) {
       const timer = setTimeout(() => {
         setShowToast(false);
-      }, 4000); // 4000 milliseconds = 4 seconds
+      }, 3000); 
 
-      return () => clearTimeout(timer); // Clean up the timer on component unmount
+      return () => clearTimeout(timer); 
     }
-  }, [showToast]); // Re-run this effect when showToast changes
+  }, [showToast]); 
 
   return (
     <>

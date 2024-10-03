@@ -10,7 +10,7 @@ import { StudentProvider } from './components/StudentContext';
 
 const App = () => {
   return (
-    <StudentProvider> {/* Wrap the application in the StudentProvider */}
+    <StudentProvider> 
       <Router>
         <Navbar />
         <div className="container mt-5">
@@ -20,8 +20,8 @@ const App = () => {
               path="/"
               element={
                 <>
-                  <StudentForm /> {/* No need to pass fetchStudents as props */}
-                  <StudentList /> {/* No need to pass students and fetchStudents as props */}
+                  <StudentForm /> 
+                  <StudentList /> 
                 </>
               }
             />

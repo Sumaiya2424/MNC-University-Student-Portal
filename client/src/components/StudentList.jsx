@@ -50,7 +50,7 @@ const StudentList = () => {
 
   const handleSaveEdit = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/students/${id}`, {
+      await fetch(`http://localhost:5000/api/students/${id}`, { 
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
