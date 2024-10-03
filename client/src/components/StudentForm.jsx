@@ -18,7 +18,7 @@ const StudentForm = () => {
     const studentData = { name, email, age, course, phone, address };
 
     try {
-      await fetch(`http://localhost:5000/api/students`, {
+      await fetch(`https://mnc-university-student-portal-backend.onrender.com/api/students`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

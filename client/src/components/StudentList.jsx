@@ -19,7 +19,7 @@ const StudentList = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this student?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/students/${id}`, {
+        const response = await fetch(`https://mnc-university-student-portal-backend.onrender.com/api/students/${id}`, {
           method: 'DELETE',
         });
         if (!response.ok) {
@@ -50,7 +50,7 @@ const StudentList = () => {
 
   const handleSaveEdit = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/students/${id}`, { 
+      await fetch(`https://mnc-university-student-portal-backend.onrender.com/api/students/${id}`, { 
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
