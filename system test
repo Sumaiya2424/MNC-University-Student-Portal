@@ -1,0 +1,57 @@
+//xml
+<dependencies>
+    <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-java</artifactId>
+        <version>4.1.0</version> 
+    </dependency>
+</dependencies>
+
+
+<dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>7.4.0</version> 
+    <scope>test</scope>
+</dependency>
+
+//testing for login
+public class LoginTest {
+
+    WebDriver driver;
+
+    @BeforeClass
+    public void setUp() {
+        // Set path to your WebDriver (ChromeDriver in this case)
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
+    }
+
+       @Test
+    public void loginTest() {
+        // Open MNC website
+        driver.get("https://mnc-university-student-portal-frontend.onrender.com/login");
+
+        // Find the username input field and enter the username
+        WebElement usernameField = driver.findElement(By.id("username"));
+        usernameField.sendKeys("testuser");
+
+        // Find the password input field and enter the password
+        WebElement passwordField = driver.findElement(By.id("password"));
+        passwordField.sendKeys("password123");
+
+        // Click the login button
+        WebElement loginButton = driver.findElement(By.id("loginButton"));
+        loginButton.click();
+
+        // Assert that login was successful by checking the page title or a specific element
+        String expectedTitle = "Home";
+        Assert.assertEquals(driver.getTitle(), expectedTitle, "Login failed or incorrect page title.");
+    }
+
+    @AfterClass
+    public void tearDown() {
+        // Close the browser
+        driver.quit();
+    }
+}
