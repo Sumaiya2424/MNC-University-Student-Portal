@@ -1,0 +1,31 @@
+public class FormValidationTest {
+
+    WebDriver driver;
+
+    @BeforeClass
+    public void setUp() {
+        // Set path to WebDriver
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
+    }
+
+    @Test
+    public void testEmptyFormSubmission() {
+        // Open the form page
+        driver.get("https://mnc-university-student-portal-frontend.onrender.com");
+
+        // Find the submit button and click it (without filling the form)
+        WebElement submitButton = driver.findElement(By.id("submitButton"));
+        submitButton.click();
+
+        // Assert that an error message is displayed
+        WebElement errorMessage = driver.findElement(By.id("errorMessage"));
+        Assert.assertTrue(errorMessage.isDisplayed(), "Error message is not displayed for empty form submission.");
+    }
+
+    @AfterClass
+    public void tearDown() {
+        // Close the browser
+        driver.quit();
+    }
+}
