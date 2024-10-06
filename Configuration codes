@@ -1,0 +1,27 @@
+
+public class ConfigTest {
+
+    WebDriver driver;
+
+    @BeforeClass
+    public void setUp() {
+        // Set path to ChromeDriver
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
+
+        // Open the website
+        driver.get("https://mnc-university-student-portal-frontend.onrender.com/");
+    }
+
+    @Test
+    public void testWebsite() {
+        // Perform your tests (e.g., login, form filling, etc.)
+        System.out.println("Testing the website!");
+    }
+
+    @AfterClass
+    public void tearDown() {
+        // Close the browser
+        driver.quit();
+    }
+}
